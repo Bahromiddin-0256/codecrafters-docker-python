@@ -16,8 +16,14 @@ def main():
     stdout, stderr = completed_process.communicate()
     if stdout:
         print(stdout.decode("utf-8"), end="")
+        sys.stdout.buffer.write(stdout)
+        sys.stdout.buffer.flush()
     if stderr:
         print(stderr.decode("utf-8"), file=sys.stderr, end="")
+        sys.stderr.buffer.write(stderr)
+        sys.stderr.buffer.flush()        
+
+    sys.exit(completed_process.returncode)
 
 if __name__ == "__main__":
     main()
