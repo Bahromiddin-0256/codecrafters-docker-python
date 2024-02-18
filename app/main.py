@@ -3,6 +3,8 @@ import sys
 import tempfile
 import shutil
 import os
+import ctypes
+
 
 def main():
     # You can use print statements as follows for debugging, they'll be visible when running tests.
@@ -17,7 +19,9 @@ def main():
     os.chroot(directory_path)
     command = os.path.join("/", os.path.basename(command))
 
-    
+    libc = ctypes.cdll.LoadLibrary("libc.so.6")
+    libc.unshare(0x20000000)
+
     completed_process = subprocess.Popen(
         [command, *args], stdout=subprocess.PIPE, stderr=subprocess.PIPE
     )
